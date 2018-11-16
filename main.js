@@ -86,9 +86,24 @@
           }
         }
       }
+      checkSnakePosition = function(){
+          if (snakeList[0].x > 500){
+              snakeList[0].x = 0;
+          }
+          if (snakeList[0].x < 0){
+              snakeList[0].x = 500;
+          }
+          if (snakeList[0].y > 500){
+              snakeList[0].x = 0;
+          }
+          if (snakeList[0].x < 0){
+              snakeList[0].x = 500;
+          }
+      }
       updateSnakePosition = function() {
         ctx.clearRect(0,0,WIDTH,HEIGHT);
         snakeList.forEach(drawSnake);
+        checkSnakePosition();
         updateSnakeList();
       }
       startGame = function() {

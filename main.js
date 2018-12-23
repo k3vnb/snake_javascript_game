@@ -1,7 +1,7 @@
 var ctx = document.getElementById('ctx').getContext('2d');
 var WIDTH = 500;
 var HEIGHT = 500;
-var snakeList,foodList,direction, eaten;
+var snakeList,foodList,direction, eaten, intervalVar;
 ctx.font = "20px Calibri";
 var snakeBody = {
   width:20,
@@ -20,20 +20,21 @@ document.onkeydown = function(event) {
   //3 - Down
   if (event.keyCode == 37) {
     direction = 0;
-  }
-  else if (event.keyCode == 38) {
+  } else if (event.keyCode == 38) {
     direction = 1;
-  }
-  else if (event.keyCode == 39) {
+  } else if (event.keyCode == 39) {
     direction = 2;
-  }
-  else if (event.keyCode == 40) {
+  } else if (event.keyCode == 40) {
     direction = 3;
   }
 }
 
 testCollision = function(rect1, rect2) {
   return ((rect1.x <= rect2.x + food.width) && (rect2.x <= rect1.x + snakeBody.width) && (rect1.y <= rect2.y + food.height) && (rect2.y <= rect1.y + snakeBody.height))
+}
+
+testCollisionSnake = function(snake1, snake2){
+  return ((Math.abs(snake1.x-snake2.x)<5) && (Math.abs(snake1.y-snake2.y)<5));
 }
 
 drawSnake = function(sb,i) {
@@ -91,6 +92,17 @@ updateSnakeList = function() {
     }
   }
 }
+
+isGameOver = function(){
+  for (i in snakeList){
+    if (i == 0) continue;
+    if (testCollisionSnake(snakeList[0],snakeList[i])){
+      clearInterval(intervalVar);
+      return;
+    }
+  }
+}
+
 checkSnakePosition = function(){
     if (snakeList[0].x > 500){
         snakeList[0].x = 0;
@@ -99,10 +111,10 @@ checkSnakePosition = function(){
         snakeList[0].x = 500;
     }
     if (snakeList[0].y > 500){
-        snakeList[0].x = 0;
+        snakeList[0].y = 0;
     }
-    if (snakeList[0].x < 0){
-        snakeList[0].x = 500;
+    if (snakeList[0].y < 0){
+        snakeList[0].y = 500;
     }
 }
 updateSnakePosition = function() {
@@ -135,17 +147,17 @@ updateSnakePosition = function() {
     }
     snakeList.unshift({x: new_X, y: new_Y});
   }
-
+  isGameOver();
   checkSnakePosition();
   updateSnakeList();
 }
-startGame = function() {
+  startGame = function() {
   snakeList = [{x:220,y:200},
                 {x:210,y:200},
                 {x:200,y:200}];
   foodList = [];
   direction = 99;
   eaten = true;
-  setInterval(updateSnakePosition,50);
+  intervalVar = setInterval(updateSnakePosition,20);
 }
 startGame();

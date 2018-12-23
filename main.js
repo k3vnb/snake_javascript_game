@@ -1,7 +1,7 @@
 var ctx = document.getElementById('ctx').getContext('2d');
 var WIDTH = 500;
 var HEIGHT = 500;
-var snakeList,foodList,direction, eaten, intervalVar;
+var snakeList,foodList,direction, eaten, intervalVar, score;
 ctx.font = "20px Calibri";
 var snakeBody = {
   width:20,
@@ -131,6 +131,7 @@ updateSnakePosition = function() {
   if (testCollision(snakeList[0], foodList[0])){
     foodList = [];
     eaten = true;
+    score += 1;
     var new_X, new_Y;
     if (direction == 0) {
       new_X = snakeList[0].x - 10;
@@ -147,6 +148,7 @@ updateSnakePosition = function() {
     }
     snakeList.unshift({x: new_X, y: new_Y});
   }
+  ctx.fillText('Score: ' + score, 420, 30);
   isGameOver();
   checkSnakePosition();
   updateSnakeList();
@@ -158,6 +160,7 @@ updateSnakePosition = function() {
   foodList = [];
   direction = 99;
   eaten = true;
+  score = 0;
   intervalVar = setInterval(updateSnakePosition,20);
 }
 startGame();

@@ -2,4 +2,4 @@
 
 ## Classic computer game, the snake grows as it eats food
 
-### Built with vanilla old school javascript
+### Built with vanilla old school javascript & HTML Canvas

@@ -2,7 +2,9 @@ var ctx = document.getElementById('ctx').getContext('2d');
 var WIDTH = 500;
 var HEIGHT = 500;
 var snakeList,foodList,direction, eaten, intervalVar, score;
+var running = false;
 ctx.font = "20px Calibri";
+ctx.fillText('Click me to start the game', 140, 250);
 var snakeBody = {
   width:20,
   height:20,
@@ -13,18 +15,27 @@ var food = {
   height:20,
   color:'orange'
 };
-document.onkeydown = function(event) {
-  //0 - Left
+
+document.onmousedown = function(event) {
+  if (running) {
+    clearInterval(intervalVar);
+    running = false;
+  }
+  startGame();
+};
+
+  document.onkeydown = function(event) {
+//0 - Left
   //1 - Up
   //2 - Right
   //3 - Down
-  if (event.keyCode == 37) {
+  if (event.keyCode == 37 && direction != 2) {
     direction = 0;
-  } else if (event.keyCode == 38) {
+  } else if (event.keyCode == 38 && direction != 3) {
     direction = 1;
-  } else if (event.keyCode == 39) {
+  } else if (event.keyCode == 39 && direction != 0) {
     direction = 2;
-  } else if (event.keyCode == 40) {
+  } else if (event.keyCode == 40 && direction != 1) {
     direction = 3;
   }
 }
@@ -98,6 +109,7 @@ isGameOver = function(){
     if (i == 0) continue;
     if (testCollisionSnake(snakeList[0],snakeList[i])){
       clearInterval(intervalVar);
+      ctx.fillText('Game Over! Click to play again', 150, 250);
       return;
     }
   }
@@ -161,6 +173,6 @@ updateSnakePosition = function() {
   direction = 99;
   eaten = true;
   score = 0;
+  running = true;
   intervalVar = setInterval(updateSnakePosition,20);
 }
-startGame();
